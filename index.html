@@ -40,25 +40,38 @@
         .container {
             width: 100%;
             max-width: 480px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
             gap: 20px;
             padding-bottom: 40px;
         }
 
+        /* ヘッダー */
         header {
             text-align: center;
             padding: 10px 0;
         }
 
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: var(--text-main);
-            display: flex;
+        .logo-area {
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            background: linear-gradient(135deg, var(--primary), #3b82f6);
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+        }
+
+        header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            color: var(--text-main);
+            line-height: 1.4;
         }
 
         header p {
@@ -67,6 +80,7 @@
             margin-top: 4px;
         }
 
+        /* カードデザイン */
         .card {
             background: var(--card-bg);
             border-radius: var(--border-radius);
@@ -75,657 +89,654 @@
             display: flex;
             flex-direction: column;
             gap: 16px;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
 
-        /* 登録・検索切り替えタブ */
-        .tab-menu {
-            display: flex;
-            background: #e2e8f0;
-            border-radius: 12px;
-            padding: 4px;
-            gap: 4px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            border: none;
-            background: transparent;
-            padding: 10px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--text-muted);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .tab-btn.active {
-            background: #ffffff;
-            color: var(--primary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .tab-content {
-            display: none;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .tab-content.active {
-            display: flex;
-        }
-
-        /* カメラ・プレビューエリア */
-        .camera-box {
-            position: relative;
-            width: 100%;
-            height: 220px;
-            background: #0f172a;
-            border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        video, canvas, .preview-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .camera-placeholder {
-            color: #94a3b8;
-            font-size: 0.9rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            text-align: center;
-            padding: 0 20px;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
+        .card-title {
             font-size: 1rem;
             font-weight: 700;
-            cursor: pointer;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
-            transition: transform 0.1s ease, background 0.2s;
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        .btn-primary:hover {
-            background: var(--primary-hover);
-        }
-
-        .btn-accent {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: #e2e8f0;
             color: var(--text-main);
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 10px;
         }
 
-        .btn-danger {
-            background: #fee2e2;
-            color: var(--danger);
-        }
-
-        /* 座席選択UI (車内俯瞰図) */
-        .seat-selector-container {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .car-layout {
-            background: #f1f5f9;
-            border: 2px dashed #cbd5e1;
+        /* アクティブな駐車券情報（ホーム） */
+        .status-banner {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border: 1px solid #bfdbfe;
             border-radius: 12px;
             padding: 16px;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            position: relative;
         }
 
-        .car-front {
-            text-align: center;
-            font-size: 0.75rem;
-            font-weight: 800;
-            color: var(--text-muted);
-            background: #e2e8f0;
-            padding: 4px;
-            border-radius: 6px;
-            letter-spacing: 2px;
+        .ticket-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
         }
 
-        .seat-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .seat-btn {
-            flex: 1;
-            padding: 12px 8px;
-            background: #ffffff;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-main);
-            cursor: pointer;
-            text-align: center;
-            transition: all 0.2s;
-        }
-
-        .seat-btn.selected {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-        }
-
-        .other-location-input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #cbd5e1;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        .other-location-input:focus {
-            border-color: var(--primary);
-        }
-
-        /* 登録済みデータ表示画面 (検索タブ内) */
-        .empty-state {
-            text-align: center;
-            padding: 40px 20px;
-            color: var(--text-muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .ticket-card {
-            background: #ffffff;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .ticket-header {
-            background: var(--primary);
-            color: white;
-            padding: 8px 16px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .ticket-body {
-            display: flex;
-            padding: 16px;
-            gap: 16px;
-            align-items: center;
-        }
-
-        .ticket-img-thumb {
-            width: 100px;
-            height: 100px;
+        .info-item {
+            background: white;
+            padding: 10px;
             border-radius: 8px;
-            object-fit: cover;
-            background: #000;
-            cursor: pointer;
-        }
-
-        .ticket-info {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
         .info-label {
             font-size: 0.75rem;
             color: var(--text-muted);
+            margin-bottom: 2px;
         }
 
         .info-value {
-            font-size: 1rem;
-            font-weight: 800;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            word-break: break-all;
+        }
+
+        .ticket-photo-preview {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* シートマップ選択 */
+        .seat-map-container {
+            position: relative;
+            background: #e2e8f0;
+            border-radius: 12px;
+            height: 240px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            border: 2px dashed #cbd5e1;
+            overflow: hidden;
+        }
+
+        .car-roof {
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: var(--text-muted);
+            background: #cbd5e1;
+            padding: 2px 12px;
+            border-radius: 4px;
+            letter-spacing: 0.1em;
+        }
+
+        .seats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            width: 100%;
+            max-width: 280px;
+            flex-grow: 1;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .seat-btn {
+            background: white;
+            border: 2px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .seat-btn:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .seat-btn.selected {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary-hover);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        /* カメラ・ファイル入力 */
+        .camera-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px;
+            background: #f1f5f9;
+            border: 2px dashed #94a3b8;
+            border-radius: 12px;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .file-input-label:hover {
+            background: #e2e8f0;
+            border-color: var(--primary);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .preview-container {
+            position: relative;
+            width: 100%;
+            display: none;
+        }
+
+        .preview-container.active {
+            display: block;
+        }
+
+        .preview-img {
+            width: 100%;
+            max-height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+        }
+
+        .remove-photo {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* フォーム入力 */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 0.85rem;
+            font-weight: 600;
             color: var(--text-main);
         }
 
-        /* モーダル (画像拡大用) */
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* ボタン */
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+        }
+
+        .btn-danger:hover {
+            background: #fee2e2;
+        }
+
+        /* アラート・メッセージ */
+        .empty-state {
+            text-align: center;
+            padding: 30px 20px;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* モーダル */
         .modal {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: none;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 1000;
             padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
         }
 
         .modal.active {
-            display: flex;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .modal-content {
-            max-width: 100%;
-            max-height: 80vh;
-            border-radius: 12px;
-            object-fit: contain;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 20px;
-            right: 20px;
             background: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.2rem;
+            width: 100%;
+            max-width: 400px;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-title {
+            font-size: 1.1rem;
             font-weight: bold;
-            cursor: pointer;
         }
 
-        /* 通知トースト */
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1e293b;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-            z-index: 1100;
-            pointer-events: none;
+        .modal-actions {
+            display: flex;
+            gap: 10px;
         }
 
-        .toast.show {
-            transform: translateX(-50%) translateY(0);
+        /* 履歴・トラブル防止Q&A */
+        .tips-list {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            line-height: 1.5;
         }
 
-        /* 隠しファイル入力 */
-        #fileInput {
-            display: none;
+        /* フッター */
+        footer {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- ヘッダー -->
         <header>
-            <h1>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
-                駐車券どこ行った？
-            </h1>
-            <p>写真と座席で駐車券の行方不明をゼロに</p>
+            <div class="logo-area">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/>
+                    <circle cx="12" cy="13" r="3"/>
+                </svg>
+            </div>
+            <h1>駐車券どこ行った？<br>スマート保管場所カメラ</h1>
+            <p>車内での「あれ？」をゼロにする、おまもりツール</p>
         </header>
 
+        <!-- メインコンテンツ：保管データがある場合 -->
+        <div id="activeTicketCard" class="card hidden">
+            <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                現在の駐車券保管場所
+            </div>
+            
+            <div class="status-banner">
+                <div class="ticket-info-grid">
+                    <div class="info-item">
+                        <div class="info-label">保管座席</div>
+                        <div class="info-value" id="displaySeat">未設定</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">駐車場名・メモ</div>
+                        <div class="info-value" id="displayMemo">なし</div>
+                    </div>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">記録日時: <span id="displayTime">--</span></div>
+                <div>
+                    <div class="info-label" style="margin-bottom:4px;">保管場所の証拠写真</div>
+                    <img id="displayPhoto" class="ticket-photo-preview" src="" alt="駐車券保管写真">
+                </div>
+            </div>
+
+            <button class="btn btn-danger" id="deleteTicketBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                精算してデータを削除する
+            </button>
+        </div>
+
+        <!-- メインコンテンツ：新規登録フォーム（データがない場合） -->
+        <div id="registerCard" class="card">
+            <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                駐車券を新しく記録する
+            </div>
+
+            <!-- 1. 座席位置選択 -->
+            <div class="form-group">
+                <label class="form-label">1. 保管した座席をタップ</label>
+                <div class="seat-map-container">
+                    <div class="car-roof">フロント（前方）</div>
+                    <div class="seats-grid">
+                        <button type="button" class="seat-btn" data-seat="運転席">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            運転席
+                        </button>
+                        <button type="button" class="seat-btn" data-seat="助手席">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            助手席
+                        </button>
+                        <button type="button" class="seat-btn" data-seat="ダッシュボード">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/></svg>
+                            ダッシュボード
+                        </button>
+                        <button type="button" class="seat-btn" data-seat="サンバイザー">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 10h18"/></svg>
+                            サンバイザー
+                        </button>
+                        <button type="button" class="seat-btn" data-seat="センターコンソール">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="2" width="12" height="20" rx="2"/></svg>
+                            コンソール
+                        </button>
+                        <button type="button" class="seat-btn" data-seat="ドアポケット">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8h16v-8M4 6h16v6H4z"/></svg>
+                            ドアポケット
+                        </button>
+                    </div>
+                    <div class="car-roof">リア（後方）</div>
+                </div>
+                <input type="hidden" id="selectedSeat" value="">
+            </div>
+
+            <!-- 2. 写真撮影 -->
+            <div class="form-group">
+                <label class="form-label">2. 保管場所の写真を撮影</label>
+                <div class="camera-section">
+                    <label class="file-input-label" id="fileLabel">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                        カメラで撮る / 画像を選ぶ
+                    </label>
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment">
+                    
+                    <div class="preview-container" id="previewContainer">
+                        <img id="imagePreview" class="preview-img" src="" alt="プレビュー">
+                        <button type="button" class="remove-photo" id="removePhotoBtn">✕</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. メモ（駐車場名など） -->
+            <div class="form-group">
+                <label class="form-label" for="memoInput">3. 駐車場名や目印（任意）</label>
+                <input type="text" id="memoInput" class="form-input" placeholder="例：〇〇デパート 3階立体駐車場">
+            </div>
+
+            <!-- 保存ボタン -->
+            <button class="btn btn-primary" id="saveTicketBtn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                保管場所をスマート記憶！
+            </button>
+        </div>
+
+        <!-- トラブル回避ヒントカード -->
         <div class="card">
-            <!-- タブメニュー -->
-            <div class="tab-menu">
-                <button class="tab-btn active" onclick="switchTab('register')">保管を記録</button>
-                <button class="tab-btn" onclick="switchTab('search')">どこ置いた？確認</button>
+            <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                紛失・トラブルを防ぐコツ
             </div>
+            <ul class="tips-list">
+                <li><strong>定位置化：</strong>車に乗ったら毎回同じ場所（サンバイザーなど）に挟む習慣をつけましょう。</li>
+                <li><strong>磁気不良に注意：</strong>スマホのスピーカーやマグネット製品の近くに置かないようにしましょう。</li>
+                <li><strong>紛失時の対応：</strong>万が一紛失した場合は、速やかに駐車場の管理係員インターホンまたは管理人室へ申し出てください。</li>
+            </ul>
+        </div>
 
-            <!-- 1. 登録タブ -->
-            <div id="registerTab" class="tab-content active">
-                <!-- カメラ/写真エリア -->
-                <div class="camera-box" id="cameraBox">
-                    <div id="cameraPlaceholder" class="camera-placeholder">
-                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                        <span>駐車券の写真を撮影、またはライブラリから選択してください</span>
-                    </div>
-                    <video id="video" autoplay playsinline style="display:none;"></video>
-                    <canvas id="canvas" style="display:none;"></canvas>
-                    <img id="previewImg" class="preview-img" style="display:none;" alt="駐車券プレビュー">
-                </div>
+        <footer>
+            &copy; 駐車券どこ行った？スマート保管場所カメラ
+        </footer>
+    </div>
 
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn btn-secondary" onclick="startCamera()" id="startCamBtn">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                        カメラ起動
-                    </button>
-                    <button class="btn btn-primary" onclick="capturePhoto()" id="captureBtn" style="display:none;">
-                        シャッター
-                    </button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('fileInput').click()">
-                        ファイル選択
-                    </button>
-                    <input type="file" id="fileInput" accept="image/*" onchange="handleFileSelect(event)">
-                </div>
-
-                <!-- 保管場所（座席選択） -->
-                <div class="seat-selector-container">
-                    <label class="label">💺 保管した座席・場所を選択</label>
-                    <div class="car-layout">
-                        <div class="car-front">フロント（前方）</div>
-                        <div class="seat-row">
-                            <button class="seat-btn" onclick="selectSeat('運転席')" data-seat="運転席">運転席</button>
-                            <button class="seat-btn" onclick="selectSeat('助手席')" data-seat="助手席">助手席</button>
-                        </div>
-                        <div class="seat-row">
-                            <button class="seat-btn" onclick="selectSeat('後部座席(左)')" data-seat="後部座席(左)">後部座席(左)</button>
-                            <button class="seat-btn" onclick="selectSeat('後部座席(右)')" data-seat="後部座席(右)">後部座席(右)</button>
-                        </div>
-                        <div class="seat-row">
-                            <button class="seat-btn" onclick="selectSeat('ダッシュボード')" data-seat="ダッシュボード">ダッシュボード</button>
-                            <button class="seat-btn" onclick="selectSeat('サンバイザー')" data-seat="サンバイザー">サンバイザー</button>
-                        </div>
-                    </div>
-                    <input type="text" id="customLocation" class="other-location-input" placeholder="その他の場所（例：センターコンソール、スマホホルダーなど）" oninput="clearSeatSelection()">
-                </div>
-
-                <button class="btn btn-accent" onclick="saveTicket()" style="margin-top: 8px;">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-                    この場所で保管を記録する！
-                </button>
-            </div>
-
-            <!-- 2. 検索・確認タブ -->
-            <div id="searchTab" class="tab-content">
-                <div id="ticketContainer">
-                    <!-- 動的に挿入 -->
-                </div>
-            </div>
+    <!-- アラートモーダル -->
+    <div class="modal" id="alertModal">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">お知らせ</div>
+            <div id="modalMessage" style="font-size: 0.9rem; color: var(--text-muted);">メッセージ</div>
+            <button class="btn btn-primary" id="modalCloseBtn">OK</button>
         </div>
     </div>
 
-    <!-- 画像拡大モーダル -->
-    <div class="modal" id="imageModal" onclick="closeModal()">
-        <button class="modal-close">&times;</button>
-        <img class="modal-content" id="modalImg" alt="拡大画像">
-    </div>
-
-    <!-- トースト通知 -->
-    <div class="toast" id="toast">保存しました</div>
-
     <script>
-        let currentImageData = null;
-        let selectedSeatName = '';
-        let mediaStream = null;
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM要素
+            const activeTicketCard = document.getElementById('activeTicketCard');
+            const registerCard = document.getElementById('registerCard');
+            const seatBtns = document.querySelectorAll('.seat-btn');
+            const selectedSeatInput = document.getElementById('selectedSeat');
+            const cameraInput = document.getElementById('cameraInput');
+            const fileLabel = document.getElementById('fileLabel');
+            const previewContainer = document.getElementById('previewContainer');
+            const imagePreview = document.getElementById('imagePreview');
+            const removePhotoBtn = document.getElementById('removePhotoBtn');
+            const memoInput = document.getElementById('memoInput');
+            const saveTicketBtn = document.getElementById('saveTicketBtn');
+            const deleteTicketBtn = document.getElementById('deleteTicketBtn');
 
-        // 初期化
-        window.addEventListener('DOMContentLoaded', () => {
-            loadSavedTicket();
-        });
+            // 表示用要素
+            const displaySeat = document.getElementById('displaySeat');
+            const displayMemo = document.getElementById('displayMemo');
+            const displayTime = document.getElementById('displayTime');
+            const displayPhoto = document.getElementById('displayPhoto');
 
-        // タブ切り替え
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            // モーダル要素
+            const alertModal = document.getElementById('alertModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalCloseBtn = document.getElementById('modalCloseBtn');
 
-            if (tabName === 'register') {
-                document.querySelector('.tab-menu button:nth-child(1)').classList.add('active');
-                document.getElementById('registerTab').classList.add('active');
-            } else {
-                document.querySelector('.tab-menu button:nth-child(2)').classList.add('active');
-                document.getElementById('searchTab').classList.add('active');
-                loadSavedTicket();
-                stopCamera(); // 検索タブを開いたらカメラを止める
-            }
-        }
+            let capturedImageData = '';
 
-        // カメラ起動
-        async function startCamera() {
-            const video = document.getElementById('video');
-            const placeholder = document.getElementById('cameraPlaceholder');
-            const previewImg = document.getElementById('previewImg');
-            const startBtn = document.getElementById('startCamBtn');
-            const captureBtn = document.getElementById('captureBtn');
+            // アプリ起動時の状態復元
+            loadStoredTicket();
 
-            try {
-                mediaStream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { facingMode: 'environment' }, 
-                    audio: false 
-                });
-                video.srcObject = mediaStream;
-                video.style.display = 'block';
-                placeholder.style.display = 'none';
-                previewImg.style.display = 'none';
-                startBtn.style.display = 'none';
-                captureBtn.style.display = 'flex';
-            } catch (err) {
-                showToast('カメラを起動できませんでした（権限を確認してください）');
-            }
-        }
-
-        // カメラ停止
-        function stopCamera() {
-            if (mediaStream) {
-                mediaStream.getTracks().forEach(track => track.stop());
-                mediaStream = null;
-            }
-            const video = document.getElementById('video');
-            const startBtn = document.getElementById('startCamBtn');
-            const captureBtn = document.getElementById('captureBtn');
-            video.style.display = 'none';
-            startBtn.style.display = 'flex';
-            captureBtn.style.display = 'none';
-        }
-
-        // 写真撮影
-        function capturePhoto() {
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const previewImg = document.getElementById('previewImg');
-            const placeholder = document.getElementById('cameraPlaceholder');
-
-            canvas.width = video.videoWidth || 640;
-            canvas.height = video.videoHeight || 480;
-            const ctx = canvas.getContext('2d');
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-            currentImageData = canvas.toDataURL('image/jpeg', 0.8);
-            previewImg.src = currentImageData;
-            previewImg.style.display = 'block';
-            video.style.display = 'none';
-
-            stopCamera();
-            showToast('写真を撮影しました！');
-        }
-
-        // ファイル選択時
-        function handleFileSelect(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // 画像を圧縮して保存サイズを抑える
-                const img = new Image();
-                img.onload = function() {
-                    const canvas = document.getElementById('canvas');
-                    const ctx = canvas.getContext('2d');
-                    const MAX_WIDTH = 800;
-                    const scaleSize = MAX_WIDTH / img.width;
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = img.height * scaleSize;
-
-                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    currentImageData = canvas.toDataURL('image/jpeg', 0.8);
-
-                    const previewImg = document.getElementById('previewImg');
-                    previewImg.src = currentImageData;
-                    previewImg.style.display = 'block';
-                    document.getElementById('cameraPlaceholder').style.display = 'none';
-                    stopCamera();
-                    showToast('画像を読み込みました！');
-                }
-                img.src = e.target.result;
-            }
-            reader.readAsDataURL(file);
-        }
-
-        // 座席選択
-        function selectSeat(seatName) {
-            selectedSeatName = seatName;
-            document.querySelectorAll('.seat-btn').forEach(btn => {
-                if (btn.dataset.seat === seatName) {
+            // 座席ボタン選択イベント
+            seatBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    seatBtns.forEach(b => b.classList.remove('selected'));
                     btn.classList.add('selected');
-                } else {
-                    btn.classList.remove('selected');
+                    selectedSeatInput.value = btn.getAttribute('data-seat');
+                });
+            });
+
+            // 写真撮影・画像選択イベント
+            cameraInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        // 画質と容量を考慮して縮小処理
+                        compressImage(event.target.result, 800, 0.7, (compressedData) => {
+                            capturedImageData = compressedData;
+                            imagePreview.src = compressedData;
+                            previewContainer.classList.add('active');
+                            fileLabel.style.display = 'none';
+                        });
+                    };
+                    reader.readAsDataURL(file);
                 }
             });
-            // 自由入力欄はクリア
-            document.getElementById('customLocation').value = '';
-        }
 
-        // 自由入力時、座席選択のハイライトを外す
-        function clearSeatSelection() {
-            selectedSeatName = '';
-            document.querySelectorAll('.seat-btn').forEach(btn => btn.classList.remove('selected'));
-        }
+            // 写真削除
+            removePhotoBtn.addEventListener('click', () => {
+                capturedImageData = '';
+                imagePreview.src = '';
+                previewContainer.classList.remove('active');
+                fileLabel.style.display = 'flex';
+                cameraInput.value = '';
+            });
 
-        // データの保存 (LocalStorage)
-        function saveTicket() {
-            const customLocation = document.getElementById('customLocation').value.trim();
-            const finalLocation = customLocation || selectedSeatName;
+            // 駐車券情報の保存
+            saveTicketBtn.addEventListener('click', () => {
+                const seat = selectedSeatInput.value;
+                const memo = memoInput.value.trim();
 
-            if (!currentImageData) {
-                showToast('駐車券の写真を撮影または選択してください');
-                return;
+                if (!seat) {
+                    showModal('入力エラー', '駐車券を保管した「座席位置」を選択してください。');
+                    return;
+                }
+                if (!capturedImageData) {
+                    showModal('入力エラー', '保管場所の「写真」を撮影または選択してください。');
+                    return;
+                }
+
+                const ticketData = {
+                    seat: seat,
+                    memo: memo || 'メモなし',
+                    photo: capturedImageData,
+                    timestamp: new Date().toLocaleString('ja-JP')
+                };
+
+                localStorage.setItem('smart_parking_ticket', JSON.stringify(ticketData));
+                loadStoredTicket();
+                showModal('保存完了', '駐車券の保管場所を記憶しました！これで紛失知らずです。');
+            });
+
+            // 駐車券情報の削除（精算完了）
+            deleteTicketBtn.addEventListener('click', () => {
+                if (confirm('駐車券のデータを削除しますか？\n（お疲れ様でした！安全運転でお帰りください）')) {
+                    localStorage.removeItem('smart_parking_ticket');
+                    resetForm();
+                    loadStoredTicket();
+                }
+            });
+
+            // モーダル閉じる
+            modalCloseBtn.addEventListener('click', () => {
+                alertModal.classList.remove('active');
+            });
+
+            function showModal(title, message) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                alertModal.classList.add('active');
             }
-            if (!finalLocation) {
-                showToast('保管場所（座席）を選択または入力してください');
-                return;
+
+            function loadStoredTicket() {
+                const stored = localStorage.getItem('smart_parking_ticket');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    displaySeat.textContent = data.seat;
+                    displayMemo.textContent = data.memo;
+                    displayTime.textContent = data.timestamp;
+                    displayPhoto.src = data.photo;
+
+                    activeTicketCard.classList.remove('hidden');
+                    registerCard.classList.add('hidden');
+                } else {
+                    activeTicketCard.classList.add('hidden');
+                    registerCard.classList.remove('hidden');
+                }
             }
 
-            const ticketData = {
-                image: currentImageData,
-                location: finalLocation,
-                timestamp: new Date().toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' })
-            };
-
-            localStorage.setItem('smart_parking_ticket', JSON.stringify(ticketData));
-            showToast('保管場所を記憶しました！');
-
-            // 記録後に確認タブへ自動移動
-            setTimeout(() => {
-                switchTab('search');
-            }, 500);
-        }
-
-        // 保存されたデータのロードと表示
-        function loadSavedTicket() {
-            const container = document.getElementById('ticketContainer');
-            const savedDataJSON = localStorage.getItem('smart_parking_ticket');
-
-            if (!savedDataJSON) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <span>現在、記録されている駐車券はありません。<br>「保管を記録」から登録してください。</span>
-                    </div>
-                `;
-                return;
+            function resetForm() {
+                seatBtns.forEach(b => b.classList.remove('selected'));
+                selectedSeatInput.value = '';
+                capturedImageData = '';
+                imagePreview.src = '';
+                previewContainer.classList.remove('active');
+                fileLabel.style.display = 'flex';
+                cameraInput.value = '';
+                memoInput.value = '';
             }
 
-            const data = JSON.parse(savedDataJSON);
+            // 画像圧縮用ヘルパー関数（localStorageの容量オーバー対策）
+            function compressImage(base64Str, maxWidth, quality, callback) {
+                const img = new Image();
+                img.src = base64Str;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
 
-            container.innerHTML = `
-                <div class="ticket-card">
-                    <div class="ticket-header">
-                        <span>記録日時: ${data.timestamp}</span>
-                        <span style="cursor:pointer; text-decoration:underline;" onclick="deleteTicket()">削除</span>
-                    </div>
-                    <div class="ticket-body">
-                        <img src="${data.image}" class="ticket-img-thumb" onclick="openModal('${data.image}')" alt="駐車券">
-                        <div class="ticket-info">
-                            <span class="info-label">📍 現在の保管場所</span>
-                            <span class="info-value">${data.location}</span>
-                        </div>
-                    </div>
-                </div>
-                <button class="btn btn-danger" onclick="deleteTicket()" style="margin-top: 12px;">
-                    駐車券を回収完了（データをクリア）
-                </button>
-            `;
-        }
+                    if (width > maxWidth) {
+                        height = Math.round((height * maxWidth) / width);
+                        width = maxWidth;
+                    }
 
-        // データ削除
-        function deleteTicket() {
-            if (confirm('駐車券の保管データを削除しますか？')) {
-                localStorage.removeItem('smart_parking_ticket');
-                currentImageData = null;
-                selectedSeatName = '';
-                document.getElementById('previewImg').style.display = 'none';
-                document.getElementById('cameraPlaceholder').style.display = 'flex';
-                document.getElementById('customLocation').value = '';
-                document.querySelectorAll('.seat-btn').forEach(btn => btn.classList.remove('selected'));
-                loadSavedTicket();
-                showToast('データをクリアしました');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    callback(canvas.toDataURL('image/jpeg', quality));
+                };
             }
-        }
-
-        // モーダル表示
-        function openModal(imgSrc) {
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImg');
-            modalImg.src = imgSrc;
-            modal.classList.add('active');
-        }
-
-        // モーダル非表示
-        function closeModal() {
-            document.getElementById('imageModal').classList.remove('active');
-        }
-
-        // トースト通知表示
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.classList.add('show');
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
+        });
     </script>
 </body>
 </html>
