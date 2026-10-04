@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>駐車券どこ行った？トラブル回避スマート保管場所カメラ</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --accent: #f59e0b;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --border: #e2e8f0;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --radius: 12px;
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        p.subtitle {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+        }
+
+        /* セクション共通 */
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* カメラセクション */
+        .camera-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        video, canvas, #preview-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .camera-placeholder {
+            color: #fff;
+            text-align: center;
+            z-index: 2;
+            padding: 16px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        .btn-primary:active {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-accent {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+            font-size: 0.85rem;
+            padding: 8px;
+        }
+
+        /* 座席表マッピング */
+        .car-layout {
+            position: relative;
+            background: #f1f5f9;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            height: 280px;
+            padding: 12px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 40px 1fr 1fr;
+            gap: 8px;
+        }
+
+        .car-front {
+            grid-column: 1 / 3;
+            background: #e2e8f0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            font-weight: bold;
+        }
+
+        .seat-btn {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-sub);
+        }
+
+        .seat-btn.selected {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+            color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .seat-full {
+            grid-column: 1 / 3;
+        }
+
+        /* メモ入力 */
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        /* 登録データ表示エリア（ダッシュボード） */
+        .ticket-info {
+            display: none;
+        }
+
+        .ticket-info.active {
+            display: block;
+        }
+
+        .no-ticket {
+            text-align: center;
+            color: var(--text-sub);
+            padding: 20px;
+            font-size: 0.9rem;
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: var(--text-sub);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .saved-image-preview {
+            width: 100%;
+            height: 180px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .flex-gap {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* アラート */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+                駐車券どこ行った？
+            </h1>
+            <p class="subtitle">車内紛失防止スマート保管場所カメラ</p>
+        </header>
+
+        <!-- メイン画面（未登録時：カメラ＆記録フォーム） -->
+        <div id="register-view" class="card">
+            <h2 class="section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                1. 駐車券を撮影
+            </h2>
+            <div class="camera-container" id="camera-container">
+                <div class="camera-placeholder" id="camera-placeholder">
+                    <p style="font-size: 0.9rem;">カメラを起動して駐車券を撮影します</p>
+                </div>
+                <video id="video" autoplay playsinline class="hidden"></video>
+                <canvas id="canvas" class="hidden"></canvas>
+                <img id="preview-image" class="hidden" alt="撮影された駐車券">
+            </div>
+            <div class="flex-gap" style="margin-bottom: 20px;">
+                <button type="button" id="start-camera-btn" class="btn btn-outline">カメラ起動</button>
+                <button type="button" id="capture-btn" class="btn btn-primary hidden">シャッター</button>
+                <button type="button" id="retake-btn" class="btn btn-outline hidden">撮り直す</button>
+            </div>
+
+            <h2 class="section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                2. 保管場所（座席）を選択
+            </h2>
+            <div class="car-layout" style="margin-bottom: 20px;">
+                <div class="car-front">前 方 (運転席・助手席側)</div>
+                <button type="button" class="seat-btn" data-seat="運転席バイザー">運転席バイザー</button>
+                <button type="button" class="seat-btn" data-seat="助手席バイザー">助手席バイザー</button>
+                <button type="button" class="seat-btn" data-seat="ダッシュボード">ダッシュボード</button>
+                <button type="button" class="seat-btn" data-seat="センターコンソール">コンソール</button>
+                <button type="button" class="seat-btn seat-full" data-seat="ドアポケット・その他">ドアポケット・その他</button>
+            </div>
+
+            <h2 class="section-title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                3. メモ（施設名・階数など）
+            </h2>
+            <div style="margin-bottom: 24px;">
+                <input type="text" id="memo-input" placeholder="例: 〇〇ショッピングモール 3F屋上">
+            </div>
+
+            <button type="button" id="save-btn" class="btn btn-accent">この場所で駐車券を記録する</button>
+        </div>
+
+        <!-- 登録済み画面（検索・確認用） -->
+        <div id="status-view" class="card hidden">
+            <h2 class="section-title" style="color: var(--success); justify-content: space-between;">
+                <span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    駐車券の保管中
+                </span>
+                <span id="saved-time" style="font-size: 0.75rem; color: var(--text-sub); font-weight: normal;"></span>
+            </h2>
+
+            <img id="saved-preview-img" class="saved-image-preview" alt="保存された駐車券">
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">保管場所（座席）</span>
+                    <span class="info-value" id="saved-seat">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">メモ・場所情報</span>
+                    <span class="info-value" id="saved-memo">-</span>
+                </div>
+            </div>
+
+            <button type="button" id="delete-btn" class="btn btn-danger">駐車券を取り出しました（データを消去）</button>
+        </div>
+    </div>
+
+    <!-- トースト通知 -->
+    <div id="toast" class="toast">保存しました</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM要素
+            const registerView = document.getElementById('register-view');
+            const statusView = document.getElementById('status-view');
+            
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const previewImage = document.getElementById('preview-image');
+            const cameraPlaceholder = document.getElementById('camera-placeholder');
+            
+            const startCameraBtn = document.getElementById('start-camera-btn');
+            const captureBtn = document.getElementById('capture-btn');
+            const retakeBtn = document.getElementById('retake-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const deleteBtn = document.getElementById('delete-btn');
+            
+            const seatBtns = document.querySelectorAll('.seat-btn');
+            const memoInput = document.getElementById('memo-input');
+            
+            const savedPreviewImg = document.getElementById('saved-preview-img');
+            const savedSeat = document.getElementById('saved-seat');
+            const savedMemo = document.getElementById('saved-memo');
+            const savedTime = document.getElementById('saved-time');
+            const toast = document.getElementById('toast');
+
+            let mediaStream = null;
+            let capturedDataUrl = null;
+            let selectedSeat = null;
+
+            // ローカルストレージのキー
+            const STORAGE_KEY = 'parking_ticket_data_v1';
+
+            // 初期化：データ確認
+            loadSavedData();
+
+            // --- カメラ関連 ---
+            startCameraBtn.addEventListener('click', async () => {
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { facingMode: 'environment' },
+                        audio: false
+                    });
+                    video.srcObject = mediaStream;
+                    video.classList.remove('hidden');
+                    cameraPlaceholder.classList.add('hidden');
+                    startCameraBtn.classList.add('hidden');
+                    captureBtn.classList.remove('hidden');
+                } catch (err) {
+                    alert('カメラを起動できませんでした。ブラウザの権限設定を確認してください。');
+                    console.error(err);
+                }
+            });
+
+            captureBtn.addEventListener('click', () => {
+                const context = canvas.getContext('2d');
+                canvas.width = video.videoWidth || 640;
+                canvas.height = video.videoHeight || 480;
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                capturedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                previewImage.src = capturedDataUrl;
+                previewImage.classList.remove('hidden');
+                video.classList.add('hidden');
+
+                stopCamera();
+
+                captureBtn.classList.add('hidden');
+                retakeBtn.classList.remove('hidden');
+            });
+
+            retakeBtn.addEventListener('click', async () => {
+                previewImage.classList.add('hidden');
+                capturedDataUrl = null;
+                retakeBtn.classList.add('hidden');
+                startCameraBtn.click();
+            });
+
+            function stopCamera() {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                    mediaStream = null;
+                }
+            }
+
+            // --- 座席選択 ---
+            seatBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    seatBtns.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    selectedSeat = btn.dataset.seat;
+                });
+            });
+
+            // --- 保存処理 ---
+            saveBtn.addEventListener('click', () => {
+                if (!capturedDataUrl) {
+                    alert('駐車券の写真を撮影してください。');
+                    return;
+                }
+                if (!selectedSeat) {
+                    alert('保管場所（座席）を選択してください。');
+                    return;
+                }
+
+                const data = {
+                    image: capturedDataUrl,
+                    seat: selectedSeat,
+                    memo: memoInput.value.trim() || 'メモなし',
+                    timestamp: new Date().toLocaleString('ja-JP', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+                };
+
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                loadSavedData();
+                showToast('駐車券の場所を記録しました！');
+            });
+
+            // --- 削除処理 ---
+            deleteBtn.addEventListener('click', () => {
+                if (confirm('駐車券を取り出しましたか？（記録を消去します）')) {
+                    localStorage.removeItem(STORAGE_KEY);
+                    resetForm();
+                    loadSavedData();
+                    showToast('記録を消去しました');
+                }
+            });
+
+            // --- データロード・ビュー切り替え ---
+            function loadSavedData() {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    savedPreviewImg.src = data.image;
+                    savedSeat.textContent = data.seat;
+                    savedMemo.textContent = data.memo;
+                    savedTime.textContent = data.timestamp;
+
+                    registerView.classList.add('hidden');
+                    statusView.classList.remove('hidden');
+                } else {
+                    registerView.classList.remove('hidden');
+                    statusView.classList.add('hidden');
+                }
+            }
+
+            function resetForm() {
+                capturedDataUrl = null;
+                selectedSeat = null;
+                previewImage.classList.add('hidden');
+                cameraPlaceholder.classList.remove('hidden');
+                startCameraBtn.classList.remove('hidden');
+                captureBtn.classList.add('hidden');
+                retakeBtn.classList.add('hidden');
+                memoInput.value = '';
+                seatBtns.forEach(b => b.classList.remove('selected'));
+                stopCamera();
+            }
+
+            // トースト表示関数
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 2500);
+            }
+        });
+    </script>
+</body>
+</html>
